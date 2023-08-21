@@ -20,3 +20,33 @@ describe('TeacherService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+describe('TeacherService Unit tests', () => {
+  let service: TeacherService;
+  let httpClientSpy: any;
+  let url: string;
+  let id: string;
+  let res: string;
+
+  beforeEach(() => {
+    httpClientSpy = {
+      get: jest.fn() 
+    }
+    service = new TeacherService(httpClientSpy);
+    res = "api/teacher";
+    id = "1";
+    url = res + "/" + id;
+  });
+
+  it('should test get all funct', () => {
+    jest.spyOn(httpClientSpy, "get").mockReturnValue(res);
+    service.all();
+    expect(httpClientSpy.get).toBeCalledWith(res);
+  });
+  
+  it('should test get detail funct by id', () => {
+    jest.spyOn(httpClientSpy, "get").mockReturnValue(res);
+    service.detail(id);
+    expect(httpClientSpy.get).toBeCalledWith(url);
+  });
+});
