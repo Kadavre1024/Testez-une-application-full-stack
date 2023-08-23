@@ -197,26 +197,27 @@ describe('FormComponent Integration test suites', () => {
   let descriptionForm: HTMLTextAreaElement;
   let sessionMock: any;
   let saveButton: any;
-  let teachers: Teacher[];
+  
   let mockTeacherService: any;
 
+  const teachers: Teacher[] = [
+    {
+      id: 1,
+      lastName: "Abra",
+      firstName: "Hamm",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: 2,
+      lastName: "Abra",
+      firstName: "Cadabra",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ];
+
   beforeEach(async () => {
-    teachers = [
-      {
-        id: 1,
-        lastName: "Abra",
-        firstName: "Hamm",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 2,
-        lastName: "Abra",
-        firstName: "Cadabra",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
     mockSessionService = {
       sessionInformation: {
         admin: true
@@ -297,7 +298,7 @@ describe('FormComponent Integration test suites', () => {
     expect(saveButton.disabled).toBe(true);
   });
 
-  /**it('should submit a valid form then open a MatSnackBar and call router.navigate with "sessions"', fakeAsync(() => {
+  it('should submit a valid form then open a MatSnackBar and call router.navigate with "sessions"', fakeAsync(() => {
 
     component.teachers$ = of(teachers);
     fixture.detectChanges();
@@ -309,9 +310,9 @@ describe('FormComponent Integration test suites', () => {
     teacher_idForm.click();
     fixture.detectChanges();
     
-    const matOption = fixture.debugElement.query(By.css('mat-option#mat-option-0')).nativeElement;
+    const matOption = fixture.debugElement.query(By.css('mat-option span[class=mat-option-text]')).nativeElement;
+    expect(matOption.textContent).toBe(" Hamm Abra ");
     matOption.click();
-    teacher_idForm.dispatchEvent(new Event('change'));
     fixture.detectChanges();
     //const matSelect = fixture.debugElement.query(By.css('span[class="mat-select-min-line ng-tns-c160-10 ng-star-inserted"]')).nativeElement;
     //expect(matSelect.textContent).toBe("Hamm Abra");
@@ -354,7 +355,7 @@ describe('FormComponent Integration test suites', () => {
     tick(4000);
     expect(submitMessage).not.toBeDefined();
     expect(router.navigate).toBeCalledWith(['sessions']);
-  }));**/
+  }));
 });
 
 
