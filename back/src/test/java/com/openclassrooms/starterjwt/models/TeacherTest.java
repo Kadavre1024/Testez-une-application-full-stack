@@ -1,6 +1,7 @@
 package com.openclassrooms.starterjwt.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
@@ -42,5 +43,18 @@ public class TeacherTest {
 		LocalDateTime date = LocalDateTime.now();
 		teacher.setUpdatedAt(date);
 		assertThat(teacher.getUpdatedAt()).isEqualTo(date);
+	}
+	
+	@Test
+	public void constructor_shouldBuild_newTeacher() {
+		LocalDateTime date = LocalDateTime.now();
+		Teacher test = new Teacher((long) 1, "Test", "test", date, date);
+		
+		assertThat(test.getId()).isEqualTo((long) 1);
+		assertThat(test.getFirstName()).isEqualTo("test");
+		assertThat(test.getLastName()).isEqualTo("Test");
+		assertThat(test.getCreatedAt()).isEqualTo(date);
+		assertThat(test.getUpdatedAt()).isEqualTo(date);
+		
 	}
 }

@@ -132,7 +132,6 @@ describe('RegisterComponent Unit Test Suites', () => {
   })
 
   it('should redirect to login page when submit', () => {
-    let submit = fixture.debugElement.nativeElement.querySelector('button[type]');
     const httpResponse = new HttpResponse({
       status: 200,
       statusText: "OK"
@@ -241,7 +240,7 @@ describe('LoginComponent Integration Test Suites', () => {
 
   });
 
-  it('should not display an error when submit and redirect to "/login"', async() => {
+  it('should not display an error when submit and redirect to "/login"', () => {
     const registerRequest : RegisterRequest = {
       email: "yoga@studio.com",
       password: "test!1234",
@@ -249,8 +248,7 @@ describe('LoginComponent Integration Test Suites', () => {
       firstName: "test"
     };
 
-    jest.spyOn(authService, "register");
-    
+    jest.spyOn(authService, "register").mockReturnValue(of());
 
     email.value = registerRequest.email;
     email.dispatchEvent(new Event('input'));
@@ -262,13 +260,14 @@ describe('LoginComponent Integration Test Suites', () => {
     lastName.dispatchEvent(new Event('input'));
     
     fixture.detectChanges();
-    jest.spyOn(router, "navigate")
+    jest.spyOn(router, "navigate");
 
-    await submitBtn.click();
+    expect(component.form!.invalid).toBe(false);
+    submitBtn.click();
     fixture.detectChanges();
     expect(authService.register).toBeCalledWith(registerRequest);
     expect(component.onError).toBe(false);
-    //expect(router.navigate).toBeCalledWith(['/login']);
+    expect(router.navigate).toBeCalledWith(['/login']);
   });
 });
 

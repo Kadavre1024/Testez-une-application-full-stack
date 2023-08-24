@@ -15,8 +15,48 @@ public class SessionTest {
 
 	Session session;
 	
+	User user1, user2;
+	
+	List<User> users;
+	
+	Teacher teacher;
+	
 	@BeforeEach
-	public void init() { session = new Session(); }
+	public void init() { 
+		session = new Session(); 
+		
+		users = new ArrayList<>();
+		
+		user1 = new User();
+		user1.setId((long) 1);
+		user1.setFirstName("Hamm");
+		user1.setLastName("Abra");
+		user1.setEmail("email@email.com");
+		user1.setPassword("123456");
+		user1.setAdmin(true);
+		user1.setCreatedAt(LocalDateTime.now());
+		user1.setUpdatedAt(LocalDateTime.now());
+		
+		user2 = new User();
+		user2.setId((long) 2);
+		user2.setFirstName("Cadabra");
+		user2.setLastName("Abra");
+		user2.setEmail("email2@email.com");
+		user2.setPassword("123456");
+		user2.setAdmin(true);
+		user2.setCreatedAt(LocalDateTime.now());
+		user2.setUpdatedAt(LocalDateTime.now());
+		
+		users.add(user1);
+		users.add(user2);
+		
+		teacher = new Teacher();
+		teacher.setId((long) 1);
+		teacher.setFirstName("Hamm");
+		teacher.setLastName("Abra");
+		teacher.setCreatedAt(LocalDateTime.now());
+		teacher.setUpdatedAt(LocalDateTime.now());
+		}
 	
 	@AfterEach
 	public void destroy() { session = null; }
@@ -42,44 +82,13 @@ public class SessionTest {
 	
 	@Test
 	public void teacherGetterSet_shouldGetAndSet_teacher() {
-		Teacher teacher = new Teacher();
-		teacher.setId((long) 1);
-		teacher.setFirstName("Hamm");
-		teacher.setLastName("Abra");
-		teacher.setCreatedAt(LocalDateTime.now());
-		teacher.setUpdatedAt(LocalDateTime.now());
-		
+
 		session.setTeacher(teacher);
 		assertThat(session.getTeacher()).isEqualTo(teacher);
 	}
 	
 	@Test
-	public void userGetterSet_shouldGetAndSet_users() {
-		List<User> users = new ArrayList<>();
-		
-		User user1 = new User();
-		user1.setId((long) 1);
-		user1.setFirstName("Hamm");
-		user1.setLastName("Abra");
-		user1.setEmail("email@email.com");
-		user1.setPassword("123456");
-		user1.setAdmin(true);
-		user1.setCreatedAt(LocalDateTime.now());
-		user1.setUpdatedAt(LocalDateTime.now());
-		
-		User user2 = new User();
-		user2.setId((long) 2);
-		user2.setFirstName("Cadabra");
-		user2.setLastName("Abra");
-		user2.setEmail("email2@email.com");
-		user1.setPassword("123456");
-		user1.setAdmin(true);
-		user2.setCreatedAt(LocalDateTime.now());
-		user2.setUpdatedAt(LocalDateTime.now());
-		
-		users.add(user1);
-		users.add(user2);
-		
+	public void userGetterSet_shouldGetAndSet_users() {		
 		session.setUsers(users);
 		assertThat(session.getUsers()).isEqualTo(users);
 	}
@@ -96,5 +105,21 @@ public class SessionTest {
 		LocalDateTime date = LocalDateTime.now();
 		session.setUpdatedAt(date);
 		assertThat(session.getUpdatedAt()).isEqualTo(date);
+	}
+	
+	@Test
+	public void constructor_shouldBuild_newSession() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Session test = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		
+		assertThat(test.getId()).isEqualTo((long) 1);
+		assertThat(test.getName()).isEqualTo("Test");
+		assertThat(test.getDate()).isEqualTo(date1);
+		assertThat(test.getDescription()).isEqualTo("test");
+		assertThat(test.getTeacher()).isEqualTo(teacher);
+		assertThat(test.getUsers()).isEqualTo(users);
+		assertThat(test.getCreatedAt()).isEqualTo(date);
+		assertThat(test.getUpdatedAt()).isEqualTo(date);
 	}
 }

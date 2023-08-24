@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,5 +62,21 @@ public class UserTest {
 		LocalDateTime date = LocalDateTime.now();
 		user.setUpdatedAt(date);
 		assertThat(user.getUpdatedAt()).isEqualTo(date);
+	}
+	
+	@Test
+	public void constructor_shouldBuild_newUser() {
+		LocalDateTime date = LocalDateTime.now();
+		User test = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		
+		assertThat(test.getId()).isEqualTo((long) 1);
+		assertThat(test.getEmail()).isEqualTo("email@email.com");
+		assertThat(test.getFirstName()).isEqualTo("test");
+		assertThat(test.getLastName()).isEqualTo("Test");
+		assertThat(test.getPassword()).isEqualTo("test!1234");
+		assertTrue(test.isAdmin());
+		assertThat(test.getCreatedAt()).isEqualTo(date);
+		assertThat(test.getUpdatedAt()).isEqualTo(date);
+		
 	}
 }
