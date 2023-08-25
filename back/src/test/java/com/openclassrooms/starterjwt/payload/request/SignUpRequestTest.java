@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 
-public class SignUpRequestUT {
+public class SignUpRequestTest {
 
 	SignupRequest signup, signupCompare;
 	

@@ -17,7 +17,7 @@ import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 
 @SpringBootTest
-public class TeacherMapperUT {
+public class TeacherMapperTest {
 	
 	@Autowired
 	TeacherMapper mapper;

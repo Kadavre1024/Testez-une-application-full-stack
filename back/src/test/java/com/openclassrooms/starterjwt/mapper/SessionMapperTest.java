@@ -29,7 +29,7 @@ import com.openclassrooms.starterjwt.services.UserService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class SessionMapperUT{
+public class SessionMapperTest{
 	
 	Session session;
 	SessionDto sessionDto1, sessionDto2;

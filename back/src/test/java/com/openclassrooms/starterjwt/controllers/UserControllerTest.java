@@ -36,7 +36,7 @@ import com.openclassrooms.starterjwt.services.UserService;
 
 //@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class UserControllerUT {
+public class UserControllerTest {
 	
 	@Mock
 	UserMapper userMapper;

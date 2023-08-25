@@ -33,7 +33,7 @@ import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
 import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthControllerUT {
+public class AuthControllerTest {
 	
 	@Mock
 	AuthenticationManager authManager;

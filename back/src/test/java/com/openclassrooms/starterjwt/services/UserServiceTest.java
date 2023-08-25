@@ -17,7 +17,7 @@ import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceUT {
+public class UserServiceTest {
 	
 	@Mock
 	UserRepository userRepo;

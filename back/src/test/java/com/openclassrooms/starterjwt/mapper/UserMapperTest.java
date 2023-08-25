@@ -17,7 +17,7 @@ import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.User;
 
 @SpringBootTest
-public class UserMapperUT {
+public class UserMapperTest {
 
 	@Autowired
 	UserMapper mapper;
