@@ -21,11 +21,10 @@ import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
-import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class SessionServiceTest {
+public class SessionServiceUT {
 
 	@Mock
 	SessionRepository sessionRepo;
@@ -164,7 +163,7 @@ public class SessionServiceTest {
 		final Session result = sessionService.getById((long) 1);
 		
 		//Then
-		//verify(sessionRepo).getById((long) 1);
+		verify(sessionRepo).findById((long) 1);
 		assertThat(result).isEqualTo(session1);
 	}
 	

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LoginRequestTest {
+public class LoginRequestUT {
 
 	LoginRequest login;
 	
@@ -27,4 +27,6 @@ public class LoginRequestTest {
 		login.setPassword("PotIonM@giK");
 		assertThat(login.getPassword()).isEqualTo("PotIonM@giK");
 	}
+	
+	
 }

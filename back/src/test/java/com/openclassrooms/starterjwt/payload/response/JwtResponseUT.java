@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class JwtResponseTest {
+public class JwtResponseUT {
 
 	JwtResponse jwt;
 	

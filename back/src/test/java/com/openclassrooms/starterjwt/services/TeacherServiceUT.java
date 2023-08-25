@@ -18,7 +18,7 @@ import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class TeacherServiceTest {
+public class TeacherServiceUT {
 
 	@Mock
 	TeacherRepository teacherRepo;

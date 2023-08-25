@@ -1,6 +1,7 @@
 package com.openclassrooms.starterjwt.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UserTest {
+public class UserUT {
 
 	User user;
 	
@@ -78,5 +79,67 @@ public class UserTest {
 		assertThat(test.getCreatedAt()).isEqualTo(date);
 		assertThat(test.getUpdatedAt()).isEqualTo(date);
 		
+	}
+	
+	@Test
+	public void builder_shouldBuild_newUser() {
+		LocalDateTime date = LocalDateTime.now();
+		User test = User
+						.builder()
+						.id((long) 1)
+						.email("email@email.com")
+						.firstName("test")
+						.lastName("Test")
+						.password("test!1234")
+						.admin(true)
+						.createdAt(date)
+						.updatedAt(date)
+						.build();
+		
+		assertThat(test.getId()).isEqualTo((long) 1);
+		assertThat(test.getEmail()).isEqualTo("email@email.com");
+		assertThat(test.getFirstName()).isEqualTo("test");
+		assertThat(test.getLastName()).isEqualTo("Test");
+		assertThat(test.getPassword()).isEqualTo("test!1234");
+		assertTrue(test.isAdmin());
+		assertThat(test.getCreatedAt()).isEqualTo(date);
+		assertThat(test.getUpdatedAt()).isEqualTo(date);
+		
+	}
+	
+	@Test
+	public void equals_shouldReturnTrue_forEquality() {
+		LocalDateTime date = LocalDateTime.now();
+		User test1 = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		User test2 = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		
+		assertTrue(test1.equals(test2));		
+	}
+	
+	@Test
+	public void equals_shouldReturnFalse_forDifferencies() {
+		LocalDateTime date = LocalDateTime.now();
+		User test1 = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		User test2 = new User((long) 2, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		
+		assertFalse(test1.equals(test2));		
+	}
+	
+	@Test
+	public void canequals_shouldReturnTrue_forSimilar() {
+		LocalDateTime date = LocalDateTime.now();
+		User test1 = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		User test2 = new User((long) 2, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		
+		assertTrue(test1.canEqual(test2));		
+	}
+	
+	@Test
+	public void canequals_shouldReturnFalse_forDifferentTypes() {
+		LocalDateTime date = LocalDateTime.now();
+		Teacher test2 = new Teacher((long) 1, "Test", "test", date, date);
+		User test1 = new User((long) 1, "email@email.com", "Test", "test", "test!1234", true, date, date);
+		
+		assertFalse(test1.canEqual(test2));		
 	}
 }

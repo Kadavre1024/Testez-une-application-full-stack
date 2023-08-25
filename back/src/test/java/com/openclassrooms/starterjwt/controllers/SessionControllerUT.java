@@ -26,7 +26,7 @@ import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.services.SessionService;
 
 @ExtendWith(MockitoExtension.class)
-public class SessionControllerTest {
+public class SessionControllerUT {
 	
 	@Mock
 	SessionMapper sessionMapper;

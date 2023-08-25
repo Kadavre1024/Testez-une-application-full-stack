@@ -31,11 +31,12 @@ import com.openclassrooms.starterjwt.mapper.UserMapper;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
+import com.openclassrooms.starterjwt.security.services.UserDetailsServiceImpl;
 import com.openclassrooms.starterjwt.services.UserService;
 
 //@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+public class UserControllerUT {
 	
 	@Mock
 	UserMapper userMapper;
@@ -43,22 +44,15 @@ public class UserControllerTest {
 	@Mock
 	UserService userService;
 	
+	@Mock
+	Authentication auth;
+	
 	User user;
 	UserDto userDto;
 	
 	UserController controller;
 	
 	UserDetails userDetailsImpl;
-	
-	private void mockAuthentication() {
-	    Authentication auth = mock(Authentication.class);
-
-	    when(auth.getPrincipal()).thenReturn(buildLoggedInUser());
-
-	    SecurityContext securityContext = mock(SecurityContext.class);
-	    when(securityContext.getAuthentication()).thenReturn(auth);
-	    SecurityContextHolder.setContext(securityContext);
-	}
 	
 	@BeforeEach
 	public void init() {
@@ -85,14 +79,7 @@ public class UserControllerTest {
 		userDto.setCreatedAt(LocalDateTime.now());
 		userDto.setUpdatedAt(LocalDateTime.now());
 		
-		userDetailsImpl = UserDetailsImpl
-		        .builder()
-		        .id(user.getId())
-		        .username(user.getEmail())
-		        .lastName(user.getLastName())
-		        .firstName(user.getFirstName())
-		        .password(user.getPassword())
-		        .build();
+		
 	}
 	
 	@AfterEach
@@ -133,10 +120,41 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void deleteSave_shouldReturnError_ifNumberFormatExeption() {
-		when(userService.findById((long)1)).thenThrow(new NumberFormatException());
-		//when(mock(SecurityContextHolder).getContext().getAuthentication().getPrincipal()).thenReturn(userDetailsImpl);
+	public void deleteSave_shouldReturnHttpResponse200() {
+		userDetailsImpl = UserDetailsImpl
+		        .builder()
+		        .id(user.getId())
+		        .username(user.getEmail())
+		        .lastName(user.getLastName())
+		        .firstName(user.getFirstName())
+		        .password(user.getPassword())
+		        .build();
 		
+		when(userService.findById((long)1)).thenReturn(user);
+		when(auth.getPrincipal()).thenReturn(userDetailsImpl);
+
+	    SecurityContext securityContext = mock(SecurityContext.class);
+	    when(securityContext.getAuthentication()).thenReturn(auth);
+	    SecurityContextHolder.setContext(securityContext);		
+		
+		ResponseEntity<?> result = controller.save("1");
+		
+		verify(userService).findById((long)1);
+		assertThat(result.getStatusCodeValue()).isEqualTo(200);
+	}
+	
+	@Test
+	public void deleteSave_shouldReturnNotFound_ifUserUnknown() {
+		ResponseEntity<?> result = controller.save("1");
+		
+		verify(userService).findById((long)1);
+		assertThat(result.getStatusCodeValue()).isEqualTo(404);
+	}
+	
+	
+	@Test
+	public void deleteSave_shouldReturnError_ifNumberFormatExeption() {
+		when(userService.findById((long)1)).thenThrow(new NumberFormatException());		
 		
 		ResponseEntity<?> result = controller.save("1");
 		
@@ -144,13 +162,23 @@ public class UserControllerTest {
 		assertThat(result.getStatusCodeValue()).isEqualTo(400);
 	}
 	
-	//@Disabled
 	@Test
-	@WithUserDetails(value="email@email.com", setupBefore=TestExecutionEvent.TEST_EXECUTION)
 	public void deleteSave_shouldReturnError_ifUserDetailsNotEqualToUser() {
-		when(userService.findById((long)1)).thenReturn(user);
-		//when(mock(SecurityContextHolder).getContext().getAuthentication().getPrincipal()).thenReturn(userDetailsImpl);
+		userDetailsImpl = UserDetailsImpl
+		        .builder()
+		        .id(user.getId())
+		        .username("test@email.com")
+		        .lastName(user.getLastName())
+		        .firstName(user.getFirstName())
+		        .password(user.getPassword())
+		        .build();
 		
+		when(userService.findById((long)1)).thenReturn(user);
+		when(auth.getPrincipal()).thenReturn(userDetailsImpl);
+
+	    SecurityContext securityContext = mock(SecurityContext.class);
+	    when(securityContext.getAuthentication()).thenReturn(auth);
+	    SecurityContextHolder.setContext(securityContext);		
 		
 		ResponseEntity<?> result = controller.save("1");
 		

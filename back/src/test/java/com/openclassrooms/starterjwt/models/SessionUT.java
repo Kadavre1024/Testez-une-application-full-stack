@@ -1,6 +1,8 @@
 package com.openclassrooms.starterjwt.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SessionTest {
+public class SessionUT {
 
 	Session session;
 	
@@ -121,5 +123,71 @@ public class SessionTest {
 		assertThat(test.getUsers()).isEqualTo(users);
 		assertThat(test.getCreatedAt()).isEqualTo(date);
 		assertThat(test.getUpdatedAt()).isEqualTo(date);
+	}
+	
+	@Test
+	public void builder_shouldBuild_newSession() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Session test = Session
+							.builder()
+							.id((long) 1)
+							.name("Test")
+							.date(date1)
+							.description("test")
+							.teacher(teacher)
+							.users(users)
+							.createdAt(date)
+							.updatedAt(date)
+							.build();
+		
+		assertThat(test.getId()).isEqualTo((long) 1);
+		assertThat(test.getName()).isEqualTo("Test");
+		assertThat(test.getDate()).isEqualTo(date1);
+		assertThat(test.getDescription()).isEqualTo("test");
+		assertThat(test.getTeacher()).isEqualTo(teacher);
+		assertThat(test.getUsers()).isEqualTo(users);
+		assertThat(test.getCreatedAt()).isEqualTo(date);
+		assertThat(test.getUpdatedAt()).isEqualTo(date);
+	}
+	
+	@Test
+	public void equals_shouldReturnTrue_forEquality() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Session test1 = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		Session test2 = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		
+		assertTrue(test1.equals(test2));		
+	}
+	
+	@Test
+	public void equals_shouldReturnFalse_forDifferencies() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Session test1 = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		Session test2 = new Session((long) 2, "Test", date1, "test", teacher, users, date, date);
+		
+		assertFalse(test1.equals(test2));		
+	}
+	
+	@Test
+	public void canequals_shouldReturnTrue_forSimilar() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Session test1 = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		Session test2 = new Session((long) 2, "Test", date1, "test", teacher, users, date, date);
+		
+		assertTrue(test1.canEqual(test2));		
+	}
+	
+	@Test
+	public void canequals_shouldReturnFalse_forDifferentTypes() {
+		LocalDateTime date = LocalDateTime.now();
+		Date date1 = new Date();
+		Teacher test2 = new Teacher((long) 1, "Test", "test", date, date);
+		Session test1 = new Session((long) 1, "Test", date1, "test", teacher, users, date, date);
+		
+		assertFalse(test1.canEqual(test2));		
 	}
 }
