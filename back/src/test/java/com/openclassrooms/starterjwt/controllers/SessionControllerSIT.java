@@ -8,10 +8,8 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
@@ -76,7 +74,7 @@ public class SessionControllerSIT {
 		
 		String jwt = jwtUtils.generateJwtToken(auth);
 		
-		MvcResult result = mockMvc.perform(
+		mockMvc.perform(
 				MockMvcRequestBuilders.get("/api/session")
 					.header("Authorization", "Bearer "+jwt))
 					.andExpect(MockMvcResultMatchers.status().isOk())

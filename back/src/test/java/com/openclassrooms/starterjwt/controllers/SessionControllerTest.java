@@ -169,28 +169,19 @@ public class SessionControllerTest {
 	
 	@Test
 	public void getFindById_shouldReturnNotFoundError_whenSessionNotFound() {
-		//when(sessionService.getById((long) 1)).thenReturn(session1);
-		//when(sessionMapper.toDto(session1)).thenReturn(sessionDto1);
-		
+
 		ResponseEntity<?> result = controller.findById("1");
 		
-		//verify(sessionService).getById((long) 1);
-		//verify(sessionMapper).toDto(session1);
 		assertThat(result.getStatusCodeValue()).isEqualTo(404);
-		//assertThat(result.getBody()).isEqualTo(sessionDto1);
 	}
 	
 	@Test
 	public void getFindById_shouldReturnBadRequestError_whenNumberFormatException() {
 		when(sessionService.getById((long) 1)).thenThrow(new NumberFormatException());
-		//when(sessionMapper.toDto(session1)).thenReturn(sessionDto1);
-		
+	
 		ResponseEntity<?> result = controller.findById("1");
 		
-		//verify(sessionService).getById((long) 1);
-		//verify(sessionMapper).toDto(session1);
 		assertThat(result.getStatusCodeValue()).isEqualTo(400);
-		//assertThat(result.getBody()).isEqualTo(sessionDto1);
 	}
 	
 	@Test
@@ -240,15 +231,12 @@ public class SessionControllerTest {
 	public void putUpdate_shouldReturnBadRequestError_whenNumberFormatException() {
 		when(sessionMapper.toEntity(sessionDto1)).thenReturn(session1);
 		when(sessionService.update((long) 1, session1)).thenThrow(new NumberFormatException());
-		//when(sessionMapper.toDto(session1)).thenReturn(sessionDto1);
 		
 		ResponseEntity<?> result = controller.update("1", sessionDto1);
 		
 		verify(sessionMapper).toEntity(sessionDto1);
 		verify(sessionService).update((long) 1,session1);
-		//verify(sessionMapper).toDto(session1);
 		assertThat(result.getStatusCodeValue()).isEqualTo(400);
-		//assertThat(result.getBody()).isEqualTo(sessionDto1);
 	}
 	
 	@Test

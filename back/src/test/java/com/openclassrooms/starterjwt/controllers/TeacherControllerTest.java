@@ -105,28 +105,20 @@ public class TeacherControllerTest {
 	
 	@Test
 	public void getFindById_shouldReturnNotFound_whenTeacherIsNotFound() {
-		//when(teacherService.findById((long)1)).thenReturn(teacher1);
-		//when(teacherMapper.toDto(teacher1)).thenReturn(teacherDto1);
 		
 		ResponseEntity<?> result = controller.findById("1");
 		
-		//verify(teacherService).findById((long)1);
-		//verify(teacherMapper).toDto(teacher1);
 		assertThat(result.getStatusCodeValue()).isEqualTo(404);
-		//assertThat(result.getBody()).isEqualTo(teacherDto1);
 	}
 	
 	@Test
 	public void getFindById_shouldReturnBadRequest_whenNumberFormatException() {
 		when(teacherService.findById((long)1)).thenThrow(new NumberFormatException());
-		//when(teacherMapper.toDto(teacher1)).thenReturn(teacherDto1);
 		
 		ResponseEntity<?> result = controller.findById("1");
 		
 		verify(teacherService).findById((long)1);
-		//verify(teacherMapper).toDto(teacher1);
 		assertThat(result.getStatusCodeValue()).isEqualTo(400);
-		//assertThat(result.getBody()).isEqualTo(teacherDto1);
 	}
 	
 	@Test

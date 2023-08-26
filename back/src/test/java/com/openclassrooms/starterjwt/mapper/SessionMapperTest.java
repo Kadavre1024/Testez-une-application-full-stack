@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.dto.UserDto;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.services.SessionService;
 import com.openclassrooms.starterjwt.services.TeacherService;
 import com.openclassrooms.starterjwt.services.UserService;
 
@@ -119,7 +115,6 @@ public class SessionMapperTest{
 		sessionDto1.setDate(new Date());
 		sessionDto1.setTeacher_id(teacher1.getId());
 		sessionDto1.setDescription("To be or not to be");
-		//sessionDto1.setUsers(users);
 		sessionDto1.setCreatedAt(LocalDateTime.now());
 		sessionDto1.setUpdatedAt(LocalDateTime.now());
 		
@@ -129,7 +124,6 @@ public class SessionMapperTest{
 		sessionDto2.setDate(new Date());
 		sessionDto2.setTeacher_id(teacher1.getId());
 		sessionDto2.setDescription("To be or not to be");
-		//sessionDto2.setUsers(users);
 		sessionDto2.setCreatedAt(LocalDateTime.now());
 		sessionDto2.setUpdatedAt(LocalDateTime.now());
 		
