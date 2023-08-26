@@ -68,8 +68,24 @@ public class AuthControllerSIT {
     }
 	
 	@Test
-	public void postLogin_shouldLogUser_byLoginRequest() throws Exception {
+	public void postLogin_shouldLogUser_byAdminLoginRequest() throws Exception {
 		loginRequest.setEmail("yoga@studio.com");
+		loginRequest.setPassword("test!1234");
+		
+		jsonLogin = ow.writeValueAsString(loginRequest);
+		
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.post("/api/auth/login")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(jsonLogin))
+					.andExpect(MockMvcResultMatchers.status().isOk())
+					.andReturn();
+		assertThat(result.getResponse().getContentAsString()).contains("token");
+	}
+	
+	@Test
+	public void postLogin_shouldLogUser_byUserLoginRequest() throws Exception {
+		loginRequest.setEmail("user@studio.com");
 		loginRequest.setPassword("test!1234");
 		
 		jsonLogin = ow.writeValueAsString(loginRequest);

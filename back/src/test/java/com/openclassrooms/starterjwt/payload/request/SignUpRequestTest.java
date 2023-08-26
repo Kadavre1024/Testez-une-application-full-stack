@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.models.User;
 
 public class SignUpRequestTest {
 
@@ -63,10 +62,13 @@ public class SignUpRequestTest {
 	
 	@Test
 	public void equals_shouldReturnFalse_forDifferencies() {
-		LocalDateTime date = LocalDateTime.now();
-		Teacher test1 = new Teacher((long) 1, "Test", "test", date, date);
+		SignupRequest signuptest = new SignupRequest(); 
+		signuptest.setEmail("");
+		signuptest.setFirstName("");
+		signuptest.setLastName("");
+		signuptest.setPassword("");
 		
-		assertFalse(signup.equals(test1));			
+		assertFalse(signup.equals(signuptest));			
 	}
 	
 	@Test
