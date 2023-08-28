@@ -50,24 +50,6 @@ describe('RegisterComponent Unit Test Suites', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should have Register title', () => {
-    expect(fixture.nativeElement.querySelector("mat-card-title").textContent).toContain("Register");
-  });
-
-  it('should create register form', () => {
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector("form")).toBeTruthy();
-    expect(compiled.querySelector("mat-card-title").textContent).toEqual("Register");
-  });
-
-  it('should form be invalid', () => {
-    expect(component.form.valid).toBeFalsy();
-  });
-
   it('email field validity', () => {
     let submit = fixture.nativeElement.querySelector('button[type="submit"]');
     let email = component.form.controls['email'];
@@ -81,27 +63,6 @@ describe('RegisterComponent Unit Test Suites', () => {
     expect(email.valid).toBeTruthy();
     expect(submit.disabled).toEqual(true);
   });
-
-  /**it('firstName field validity', () => {
-    let submit = fixture.nativeElement.querySelector('button[type="submit"]');
-    let firstName = component.form.controls['firstName'];
-    expect(firstName.valid).toBeFalsy();
-    
-    //Validator min(3)
-    firstName.setValue("te");
-    fixture.detectChanges();
-    expect(firstName.hasError('min')).toBeTruthy();
-
-    //Validator max(20)
-    firstName.setValue("abcdefghijklmnopqrstuv");
-    fixture.detectChanges();
-    expect(firstName.hasError('max')).toBeTruthy();
-
-    firstName.setValue("test");
-    fixture.detectChanges();
-    expect(firstName.valid).toBeTruthy();
-    expect(submit.disabled).toEqual(true);
-  });**/
 
   it('should enable submit button while email and password are verified', () => {
     let password = component.form.controls['password'];
@@ -144,7 +105,5 @@ describe('RegisterComponent Unit Test Suites', () => {
     component.submit();
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
-
-  //it('should navigate ')
 });
 

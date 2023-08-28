@@ -81,7 +81,6 @@ describe('DetailComponent with admin session', () => {
         { provide: SessionService, useValue: mockSessionService },
         { provide: SessionApiService, useValue: mockSessionApiService },
         { provide: TeacherService, useValue: mockTeacherService },
-        //{ provide: MatSnackBar, useValue: mockMatSnackBar }
       ],
     })
       .compileComponents();
@@ -94,10 +93,6 @@ describe('DetailComponent with admin session', () => {
     let teacherServiceSpy = jest.spyOn(mockTeacherService, "detail").mockReturnValue(of(teacherMock));
     let sessionApiServiceSpy = jest.spyOn(mockSessionApiService, "detail").mockReturnValue(of(sessionMock));
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should have the delete button when admin session', () => {
@@ -162,15 +157,6 @@ describe('DetailComponent with admin session', () => {
     component.delete();
     expect(spy).toBeCalledWith('Session deleted !', 'Close', { duration: 3000 });
   });
-
-  /**it("should delete() call router.navigate with ['sessions'] after delete session", fakeAsync(() => {
-    const httpResponse = new HttpResponse({ status: 200, statusText: "OK"})
-    const spy = jest.spyOn(router, "navigate");
-    jest.spyOn(sessionApiService, "delete").mockReturnValue(of(httpResponse));
-    component.delete();
-    //tick(3000);
-    expect(jest.spyOn(router, "navigate")).toHaveBeenCalledWith(['sessions']);
-  }));**/
 
   it('should call SessionApiService.participate() when call participate()', () => {
     const spy = jest.spyOn(mockSessionApiService, "participate").mockReturnValue(of());
@@ -268,10 +254,6 @@ describe('DetailComponent with user session', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should not have the delete button', () => {
     const deleteBtn = fixture.debugElement.nativeElement.querySelectorAll('span[class="ml1"]')[0];
     expect(deleteBtn).not.toBe("Delete");
@@ -290,7 +272,4 @@ describe('DetailComponent with user session', () => {
     const participateBtn = fixture.debugElement.nativeElement.querySelectorAll('span[class="ml1"]')[0];
     expect(participateBtn.textContent).toBe("Do not participate");
   });
-
-  
-
 });

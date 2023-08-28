@@ -600,7 +600,7 @@ describe('Admin session spec', () => {
     
   });
 
-  describe('Admin session spec', () => {
+  describe('Delete user spec', () => {
     
 
     it('Login successfull', () => {

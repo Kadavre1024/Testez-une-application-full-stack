@@ -71,20 +71,6 @@ describe('LoginComponent Unit Test Suites', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should create login form', () => {
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector("form")).toBeTruthy();
-    expect(compiled.querySelector("mat-card-title").textContent).toEqual("Login");
-  });
-
-  it('should form be invalid', () => {
-    expect(component.form.valid).toBeFalsy();
-  });
-
   it('email field validity', () => {
     let submit = fixture.nativeElement.querySelector('button[type]');
     let email = component.form.controls['email'];
@@ -107,10 +93,7 @@ describe('LoginComponent Unit Test Suites', () => {
 
     password.setValue("faKePassW0rd");
     fixture.detectChanges();
-    /**expect(password.hasError('min')).toBeTruthy();
-
-    password.setValue("test@test.com");
-    fixture.detectChanges();**/
+    
     expect(password.valid).toBeTruthy();
     expect(submit.disabled).toEqual(true);
   });

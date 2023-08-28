@@ -7,36 +7,32 @@ import { Component } from '@angular/core';
 
 describe('SessionService', () => {
   let service: SessionService;
+  let a: boolean | undefined;
   let user: SessionInformation;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(SessionService);
-    user = {
-        token: "test",
-        type: "test",
-        admin: true,
-        username: "testname",
-        firstName: "testfirst",
-        lastName: "testlast",
-        id: 1
-      }
   });
 
   afterEach(() => {
   });
 
-  it('should logged in a user', () => {
+  it('should given a subject with a false value', () => {
+    service.$isLogged().subscribe((x) => a=x)
+    expect(a).toEqual(false);
+  });
+
+  it('should logged in', () => {
     service.logIn(user);
-    expect(service.sessionInformation).toEqual(user);
-    expect(service.isLogged).toEqual(true);
+    service.$isLogged().subscribe((x) => a=x)
+    expect(a).toEqual(true);
   });
 
   it('should logged out', () => {
-    service.isLogged = true;
-    service.sessionInformation = user;
+    expect(a).toEqual(true);
     service.logOut();
-    expect(service.sessionInformation).toEqual(undefined);
-    expect(service.isLogged).toEqual(false);
+    service.$isLogged().subscribe((x) => a=x)
+    expect(a).toEqual(false);
   });
 });

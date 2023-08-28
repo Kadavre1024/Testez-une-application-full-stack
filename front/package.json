@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
-    "test": "jest",
+    "test": "jest -c jest.config.js",
+    "integration": "jest -c jest.config.integration.js",
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
     "test:coverage": "jest --coverage",

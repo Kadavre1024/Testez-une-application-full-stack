@@ -1,5 +1,5 @@
 import { HttpClientModule } from "@angular/common/http";
-import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -133,7 +133,16 @@ describe('FormComponent Integration test suites', () => {
       expect(saveButton.disabled).toBe(true);
     });
   
-    /**it('should submit a valid form then open a MatSnackBar and call router.navigate with "sessions"', fakeAsync(() => {
+    it('should navigate to sessions path when not admin session', () => {
+        jest.spyOn(router, "navigate");
+        mockSessionService.sessionInformation.admin = false;
+        fixture = TestBed.createComponent(FormComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+        expect(router.navigate).toHaveBeenCalledWith(['/sessions']);
+      });
+
+    /**it('should submit a valid form then open a MatSnackBar and call router.navigate with "sessions"', fakeAsync(async() => {
   
       component.teachers$ = of(teachers);
       fixture.detectChanges();
@@ -143,16 +152,20 @@ describe('FormComponent Integration test suites', () => {
       dateForm.value = sessionMock.date;
       dateForm.dispatchEvent(new Event('input'));
       teacher_idForm.click();
-      tick(1000);
       fixture.detectChanges();
-         
+      //const trigger = fixture.debugElement.query(By.css('.mat-mdc-select-trigger'))!.nativeElement;
       const matOption = fixture.debugElement.query(By.css('.cdk-overlay-container .mat-select-panel .mat-option-text')).nativeElement;
       expect(matOption.textContent).toBe(" Hamm Abra ");
-      matOption.click();
-      tick(1000);
+      matOption.select();
+      
       fixture.detectChanges();
+      expect(matOption.seleted).toBe(true)
+      //trigger.click();
+      fixture.detectChanges();
+      flush();
+
       expect(teacher_idForm.textContent).toBe("Hamm Abra");
-      teacher_idForm.dispatchEvent(new Event('select'));
+      teacher_idForm.dispatchEvent(new Event('selectionChange'));
       fixture.detectChanges();
 
       descriptionForm.value = sessionMock.description;
@@ -161,33 +174,33 @@ describe('FormComponent Integration test suites', () => {
       jest.spyOn(router, "navigate");
       jest.spyOn(matSnackBar, "open");
       fixture.detectChanges();
-      expect(nameForm.value).toBe(sessionMock.name);
-      expect(nameForm.checkValidity()).toBe(true);
-      expect(dateForm.value).toBe(sessionMock.date);
-      expect(dateForm.checkValidity()).toBe(true);
-      expect(teacher_idForm.value).toBe(sessionMock.teacher_id);
-      expect(teacher_idForm.checkValidity()).toBe(true);
-      expect(descriptionForm.value).toBe(sessionMock.description);
-      expect(descriptionForm.checkValidity()).toBe(true);
-  
-      expect(component.sessionForm!.invalid).toBe(false);
-      expect(saveButton.disabled).toBe(false);
-  
-      saveButton.click();
+      await fixture.whenStable().then(() => {
+        expect(nameForm.value).toBe(sessionMock.name);
+        expect(nameForm.checkValidity()).toBe(true);
+        expect(dateForm.value).toBe(sessionMock.date);
+        expect(dateForm.checkValidity()).toBe(true);
+        expect(teacher_idForm.value).toBe(sessionMock.teacher_id);
+        expect(teacher_idForm.checkValidity()).toBe(true);
+        expect(descriptionForm.value).toBe(sessionMock.description);
+        expect(descriptionForm.checkValidity()).toBe(true);
+    
+        expect(component.sessionForm!.invalid).toBe(false);
+        expect(saveButton.disabled).toBe(false);
+    
+        saveButton.click();
+        
+        fixture.detectChanges();
+        expect(matSnackBar.open).toBeCalledWith('Session created !', 'Close', { duration: 3000 })
+        fixture.detectChanges();
+    
+        const submitMessage = fixture.debugElement.nativeElement.querySelector("mat-snack-bar");
+    
+        expect(submitMessage).toBeTruthy();
+        expect(submitMessage.message).toBe('Session created !');
+        expect(submitMessage).not.toBeDefined();
+        expect(router.navigate).toBeCalledWith(['sessions']);
+      })
       
-      fixture.detectChanges();
-      expect(matSnackBar.open).toBeCalledWith('Session created !', 'Close', { duration: 3000 })
-      tick(1000);
-      fixture.detectChanges();
-  
-      const submitMessage = fixture.debugElement.nativeElement.querySelector("mat-snack-bar");
-  
-      expect(submitMessage).toBeTruthy();
-      expect(submitMessage.message).toBe('Session created !');
-  
-      tick(4000);
-      expect(submitMessage).not.toBeDefined();
-      expect(router.navigate).toBeCalledWith(['sessions']);
     }));**/
   });
   

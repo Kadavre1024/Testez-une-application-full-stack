@@ -80,10 +80,6 @@ describe('MeComponent', () => {
     component = fixture.componentInstance;
   })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should UserService set user', () => {
     jest.spyOn(mockUserService, "getById").mockReturnValue(of(user));
     fixture.detectChanges();

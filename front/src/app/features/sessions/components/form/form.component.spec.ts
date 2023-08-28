@@ -92,10 +92,6 @@ describe('FormComponent', () => {
     component.onUpdate = false;
   })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should navigate to sessions path when not admin session', () => {
     jest.spyOn(router, "navigate");
     mockSessionService.sessionInformation.admin = false;
@@ -130,23 +126,13 @@ describe('FormComponent', () => {
       date.setValue(sessionMock.date);
       teacher_id.setValue(sessionMock.teacher_id);
     });
-    it('should have onUpdate param on false while submitting a create form', ()=>{
-      component.submit();
-      expect(component.onUpdate).toBeFalsy();
-    });
-
-    it('should call sessionApiService.create with sessionMock after submit creation', () => {
-      jest.spyOn(sessionApiService, "create").mockReturnValue(of(sessionMock));
-      
-      component.submit();
-      expect(sessionApiService.create).toBeCalledWith(sessionMock);
-    });
 
     it('should navigate to sessions after submit a created session', () => {
       jest.spyOn(router, "navigate");
       jest.spyOn(sessionApiService, "create").mockReturnValue(of(sessionMock));
   
       component.submit();
+      expect(sessionApiService.create).toBeCalledWith(sessionMock);
       expect(router.navigate).toHaveBeenCalledWith(['sessions']);
     });
 

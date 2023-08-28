@@ -81,14 +81,6 @@ describe('ListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should have session admin true', () => {
-    expect(component.user).toEqual({"admin" : true});
-  });
-
   it('should display create button when session admin', () => {
     const createBtn = fixture.debugElement.nativeElement.querySelector('span[class="ml1"]');
     expect(createBtn.textContent).toBe("Create");

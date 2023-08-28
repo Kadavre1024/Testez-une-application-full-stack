@@ -78,10 +78,10 @@ describe('LoginComponent Integration Test Suites', () => {
       email.setValue("");
     });
   
-    it('should display an error message when submit with bad email and password', () => {
+    it('should display an error message when submit with bad email', () => {
       const loginRequest : LoginRequest = {
         email: "test@test.com",
-        password: "test"
+        password: "test!1234"
       };
       const errorResponse = new HttpErrorResponse({
         error: "test 404 error",
@@ -101,13 +101,17 @@ describe('LoginComponent Integration Test Suites', () => {
   
     });
   
-    it('should not display an error when submit with good email and password and redirect to "/sessions"', () => {
+    it('should display an error when submit with good email and bad password and redirect to "/sessions"', () => {
       const loginRequest : LoginRequest = {
         email: "yoga@studio.com",
-        password: "test!1234"
+        password: "test"
       };
-      jest.spyOn(authService, "login").mockReturnValue(of(sessionInformation));
-      jest.spyOn(router, "navigate")
+      const errorResponse = new HttpErrorResponse({
+        error: "test 404 error",
+        status: 404,
+        statusText: "Not Found"
+      });
+      jest.spyOn(authService, "login").mockReturnValue(throwError(() => errorResponse));
       email.setValue(loginRequest.email);
       password.setValue(loginRequest.password);
       fixture.detectChanges();
@@ -115,7 +119,26 @@ describe('LoginComponent Integration Test Suites', () => {
       submitBtn.click();
       fixture.detectChanges();
       expect(authService.login).toBeCalledWith(loginRequest);
-      expect(component.onError).toBe(false);
-      expect(jest.spyOn(router, "navigate")).toBeCalledWith(["/sessions"]);
+      expect(component.onError).toBe(true);
+      expect(fixture.debugElement.nativeElement.querySelector('p.error').textContent).toBe("An error occurred");
+  
     });
+
+    it('should not display an error when submit with good email and password and redirect to "/sessions"', () => {
+        const loginRequest : LoginRequest = {
+          email: "yoga@studio.com",
+          password: "test!1234"
+        };
+        jest.spyOn(authService, "login").mockReturnValue(of(sessionInformation));
+        jest.spyOn(router, "navigate")
+        email.setValue(loginRequest.email);
+        password.setValue(loginRequest.password);
+        fixture.detectChanges();
+    
+        submitBtn.click();
+        fixture.detectChanges();
+        expect(authService.login).toBeCalledWith(loginRequest);
+        expect(component.onError).toBe(false);
+        expect(jest.spyOn(router, "navigate")).toBeCalledWith(["/sessions"]);
+      });
   });
