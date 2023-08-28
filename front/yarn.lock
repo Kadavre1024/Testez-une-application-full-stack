@@ -2216,6 +2216,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/cypress__code-coverage@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.npmjs.org/@types/cypress__code-coverage/-/cypress__code-coverage-3.10.0.tgz"
+  integrity sha512-wzgBnjD5yyZhpOKNxKNqptAMgzY2klexrA97loeUa/63Rmnnsno2y/AmcaPSkTBaqDjDXgyEAxTiCgWeMGGOuA==
+  dependencies:
+    cypress "*"
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.npmjs.org/@types/eslint-scope/-/eslint-scope-3.7.4.tgz"

@@ -3,6 +3,7 @@ import { expect } from '@jest/globals';
 
 import { SessionService } from './session.service';
 import { SessionInformation } from '../interfaces/sessionInformation.interface';
+import { Component } from '@angular/core';
 
 describe('SessionService', () => {
   let service: SessionService;

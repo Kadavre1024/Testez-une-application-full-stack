@@ -55,11 +55,86 @@ describe('User session spec', () => {
       cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
   
       cy.url().should('include', '/sessions')
-
-      cy.get('button span').contains("Detail").click()
-
-      cy.url().should('include', '/sessions/detail/1')
     })
+
+    it('Account details', () => {
+      const userFirstName = 'firstName';
+      const userLastName = 'lastName';
+      const userEmail = 'email@test.com'
+      const userAdmin = false;
+      const userCreatedAt = new Date()
+      const userUpdatedAt = new Date()
+      const sessionName = "No Stress";
+      const sessionTeacher_id = 1;
+      const sessionDescription = "The course you need if you want to be happy.";
+      let sessionUsers: Number[] = [];
+
+    cy.intercept(
+      {
+          method: 'GET',
+          url: '/api/user/1',
+      },
+      {
+        id: 1,
+        username: 'userName',
+        firstName: userFirstName,
+        lastName: userLastName,
+        email: userEmail,
+        admin: userAdmin,
+        password: "password",
+        createdAt: userCreatedAt,
+        updatedAt: userUpdatedAt
+
+      },
+      ).as('user')
+
+      cy.intercept(
+        {
+          method: 'GET',
+          url: '/api/session',
+        },
+        [
+            {
+                id: 1,
+                name: sessionName,
+                date: new Date(),
+                teacher_id: sessionTeacher_id,
+                description: sessionDescription,
+                users: [],
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        ]).as('session')
+
+        cy.intercept(
+          {
+              method: 'GET',
+              url: '/api/session/1',
+          },
+          {
+              id: 1,
+              name: sessionName,
+              date: new Date(),
+              teacher_id: sessionTeacher_id,
+              description: sessionDescription,
+              users: sessionUsers,
+              createdAt: new Date(),
+              updatedAt: new Date()
+          }
+          ).as('session')
+
+    cy.get('span[routerLink=me]').click().then(()=>{
+      cy.url().should('include', '/me').then(()=>{
+          cy.get('p').contains("Name: "+userFirstName+" "+userLastName.toUpperCase())
+          cy.get('p').contains("Email: "+userEmail)
+      })
+    })
+    cy.get('button').first().click()
+    cy.url().should('include', '/sessions')
+
+    cy.get('button span').contains("Detail").click()
+    cy.url().should('include', '/sessions/detail/1')
+  })
 
     it('Participate to a session', () => {
 
@@ -105,16 +180,12 @@ describe('User session spec', () => {
       
       cy.get('h1').contains(sessionName).then(()=>{
         sessionUsers.push(1)
-        cy.get('button span').contains("Participate").click()
+        cy.get('button span').contains("Participate").click().then(()=>{
+          cy.wait(500)
+          cy.get('button span').contains('Do not participate')
         cy.get('span[class=ml1]').contains("1 attendees")
-        
-        
+        })
       })
-
-      //cy.get('button span').contains("Participate").click().then(()=>{
-        
-        //cy.get('button span').should('eq', 'Do not participate')
-
     })
 
     it('Do not participate to a session', () => {
