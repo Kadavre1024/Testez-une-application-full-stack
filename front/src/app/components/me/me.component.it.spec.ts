@@ -1,4 +1,4 @@
-import { HttpClientModule, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpClientModule, HttpResponse } from "@angular/common/http";
 import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -22,6 +22,7 @@ describe('MeComponent', () => {
     let matSnackBar: MatSnackBar;
     let sessionService:SessionService;
     let router: Router;
+    let httpClientMock: any;
   
     const mockSessionService = {
       sessionInformation: {
@@ -33,6 +34,11 @@ describe('MeComponent', () => {
     let userService : UserService;
   
     beforeEach(async () => {
+
+      httpClientMock = {
+        get: jest.fn(),
+        delete: jest.fn()
+      }
       
       await TestBed.configureTestingModule({
         declarations: [MeComponent],
@@ -48,7 +54,7 @@ describe('MeComponent', () => {
         ],
         providers: [
           { provide: SessionService, useValue: mockSessionService },
-          UserService,
+          { provide: UserService, useValue: new UserService(httpClientMock) },
           MatSnackBar,
         ],
       })
@@ -81,7 +87,7 @@ describe('MeComponent', () => {
     });
   
     it('should UserService set user', () => {
-      jest.spyOn(userService, "getById").mockReturnValue(of(user));
+      jest.spyOn(httpClientMock, "get").mockReturnValue(of(user));
       fixture.detectChanges();
 
       const userNameField = fixture.nativeElement.querySelectorAll("p")[0];
@@ -95,9 +101,9 @@ describe('MeComponent', () => {
     it('should UserService call delete method when click on delete button', fakeAsync(() => {
         user.admin = false;
         const httpResponse = new HttpResponse({ status: 200, statusText: "OK"})
-        jest.spyOn(userService, "getById").mockReturnValue(of(user));
+        jest.spyOn(httpClientMock, "get").mockReturnValue(of(user));
         fixture.detectChanges();
-        jest.spyOn(userService, "delete").mockReturnValue(of(httpResponse));
+        jest.spyOn(httpClientMock, "delete").mockReturnValue(of(httpResponse));
         jest.spyOn(sessionService, "logOut");
         jest.spyOn(router, "navigate");
         jest.spyOn(matSnackBar, "open");
@@ -105,7 +111,7 @@ describe('MeComponent', () => {
         deleteBtn.click();
         fixture.detectChanges();
         tick(1000);
-        expect(userService.delete).toBeCalled();
+        expect(httpClientMock.delete).toBeCalled();
         expect(sessionService.logOut).toBeCalled();
         expect(matSnackBar.open).toBeCalledWith("Your account has been deleted !", 'Close', { duration: 3000 });
         tick(3000);

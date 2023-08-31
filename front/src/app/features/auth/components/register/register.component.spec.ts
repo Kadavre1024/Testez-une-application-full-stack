@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,11 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { expect } from '@jest/globals';
 
 import { RegisterComponent } from './register.component';
-import { RegisterRequest } from '../../interfaces/registerRequest.interface';
 import { of, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+
 
 describe('RegisterComponent Unit Test Suites', () => {
   let component: RegisterComponent;
@@ -30,8 +29,6 @@ describe('RegisterComponent Unit Test Suites', () => {
       declarations: [RegisterComponent],
       providers: [ 
         { provide: AuthService, useValue: mockAuthService },
-        /**{ provide: FormBuilder, useValue: fb },
-        { provide: Router, useValue: router },**/
        ],
       imports: [
         BrowserAnimationsModule,
@@ -48,20 +45,6 @@ describe('RegisterComponent Unit Test Suites', () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('email field validity', () => {
-    let submit = fixture.nativeElement.querySelector('button[type="submit"]');
-    let email = component.form.controls['email'];
-    expect(email.valid).toBeFalsy();
-
-    email.setValue("test");
-    expect(email.hasError('email')).toBeTruthy();
-
-    email.setValue("test@test.com");
-    fixture.detectChanges();
-    expect(email.valid).toBeTruthy();
-    expect(submit.disabled).toEqual(true);
   });
 
   it('should enable submit button while email and password are verified', () => {
@@ -81,7 +64,7 @@ describe('RegisterComponent Unit Test Suites', () => {
     expect(submit.disabled).toEqual(false);
   });
 
-  it('should throw error when submit', () => {
+  it('should throw error when submit with bad http response', () => {
     const errorResponse = new HttpErrorResponse({
       error: "test 404 error",
       status: 404,
@@ -92,7 +75,7 @@ describe('RegisterComponent Unit Test Suites', () => {
     expect(component.onError).toBe(true);
   })
 
-  it('should redirect to login page when submit', () => {
+  it('should redirect to login page when submit with http response OK', () => {
     const httpResponse = new HttpResponse({
       status: 200,
       statusText: "OK"

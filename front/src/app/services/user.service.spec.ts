@@ -4,25 +4,6 @@ import { expect } from '@jest/globals';
 
 import { UserService } from './user.service';
 
-describe('UserService', () => {
-  let service: UserService;
-  let httpClientSpy: any;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports:[
-        HttpClientModule
-      ]
-    });
-    service = TestBed.inject(UserService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-  
-});
-
 describe('UserService Unit tests', () => {
   let service: UserService;
   let httpClientSpy: any;

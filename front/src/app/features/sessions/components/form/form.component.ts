@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { Session } from '../../interfaces/session.interface';
 import { SessionApiService } from '../../services/session-api.service';
 import { of } from 'rxjs';
 import { Teacher } from 'src/app/interfaces/teacher.interface';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-form',
@@ -15,6 +16,9 @@ import { Teacher } from 'src/app/interfaces/teacher.interface';
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
+
+  /** For testing purposes */
+  @ViewChild(MatSelect) public matSelect!: MatSelect;
 
   public onUpdate: boolean = false;
   public sessionForm: FormGroup | undefined;

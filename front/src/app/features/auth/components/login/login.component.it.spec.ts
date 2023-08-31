@@ -26,15 +26,19 @@ describe('LoginComponent Integration Test Suites', () => {
     let router: Router;
     let authService: AuthService;
     let sessionInformation: SessionInformation;
+    let httpClientMock: any;
   
     beforeEach(async () => {
+      httpClientMock = {
+        post: jest.fn()
+      }
   
       await TestBed.configureTestingModule({
         declarations: [LoginComponent],
         providers: [
           SessionService,
           UserService,
-          AuthService,
+          { provide: AuthService, useValue: new AuthService(httpClientMock)},
         ],
         imports: [
           RouterTestingModule,
@@ -88,7 +92,9 @@ describe('LoginComponent Integration Test Suites', () => {
         status: 404,
         statusText: "Not Found"
       });
-      jest.spyOn(authService, "login").mockReturnValue(throwError(() => errorResponse));
+      jest.spyOn(httpClientMock, "post").mockReturnValue(throwError(() => errorResponse));
+      jest.spyOn(authService, "login");
+
       email.setValue(loginRequest.email);
       password.setValue(loginRequest.password);
       fixture.detectChanges();
@@ -96,6 +102,7 @@ describe('LoginComponent Integration Test Suites', () => {
       submitBtn.click();
       fixture.detectChanges();
       expect(authService.login).toBeCalledWith(loginRequest);
+      expect(httpClientMock.post).toBeCalledWith("api/auth/login",loginRequest);
       expect(component.onError).toBe(true);
       expect(fixture.debugElement.nativeElement.querySelector('p.error').textContent).toBe("An error occurred");
   
@@ -111,7 +118,10 @@ describe('LoginComponent Integration Test Suites', () => {
         status: 404,
         statusText: "Not Found"
       });
-      jest.spyOn(authService, "login").mockReturnValue(throwError(() => errorResponse));
+
+      jest.spyOn(httpClientMock, "post").mockReturnValue(throwError(() => errorResponse));
+      jest.spyOn(authService, "login");
+
       email.setValue(loginRequest.email);
       password.setValue(loginRequest.password);
       fixture.detectChanges();
@@ -119,18 +129,21 @@ describe('LoginComponent Integration Test Suites', () => {
       submitBtn.click();
       fixture.detectChanges();
       expect(authService.login).toBeCalledWith(loginRequest);
+      expect(httpClientMock.post).toBeCalledWith("api/auth/login",loginRequest);
       expect(component.onError).toBe(true);
       expect(fixture.debugElement.nativeElement.querySelector('p.error').textContent).toBe("An error occurred");
   
     });
 
-    it('should not display an error when submit with good email and password and redirect to "/sessions"', () => {
+    it('should not display any error when submit with good email and password and redirect to "/sessions"', () => {
         const loginRequest : LoginRequest = {
           email: "yoga@studio.com",
           password: "test!1234"
         };
-        jest.spyOn(authService, "login").mockReturnValue(of(sessionInformation));
+        jest.spyOn(httpClientMock, "post").mockReturnValue(of(sessionInformation));
+        jest.spyOn(authService, "login");
         jest.spyOn(router, "navigate")
+        
         email.setValue(loginRequest.email);
         password.setValue(loginRequest.password);
         fixture.detectChanges();
@@ -138,7 +151,8 @@ describe('LoginComponent Integration Test Suites', () => {
         submitBtn.click();
         fixture.detectChanges();
         expect(authService.login).toBeCalledWith(loginRequest);
+        expect(httpClientMock.post).toBeCalledWith("api/auth/login",loginRequest);
         expect(component.onError).toBe(false);
-        expect(jest.spyOn(router, "navigate")).toBeCalledWith(["/sessions"]);
+        expect(router.navigate).toBeCalledWith(["/sessions"]);
       });
   });

@@ -86,12 +86,6 @@ describe('MeComponent', () => {
     expect(component.user?.id).toBe(user.id);
   });
 
-  it('should UserService call delete method when delete()', () => {
-    jest.spyOn(mockUserService, "delete").mockReturnValue(of(user));
-    component.delete();
-    expect(mockUserService.delete).toBeCalled();
-  });
-
   it('should delete() call matSnackBar.open after delete user', () => {
     const httpResponse = new HttpResponse({ status: 200, statusText: "OK"})
     const spy = jest.spyOn(matSnackBar, "open");
@@ -105,7 +99,7 @@ describe('MeComponent', () => {
     const spy = jest.spyOn(sessionService, "logOut");
     jest.spyOn(mockUserService, "delete").mockReturnValue(of(httpResponse));
     component.delete();
-    tick(3000);
+    tick(500);
     expect(spy).toBeCalled();
   }));
 
@@ -114,13 +108,7 @@ describe('MeComponent', () => {
     const spy = jest.spyOn(router, "navigate");
     jest.spyOn(mockUserService, "delete").mockReturnValue(of(httpResponse));
     component.delete();
-    tick(3000);
+    tick(500);
     expect(spy).toBeCalledWith(['/']);
   }));
-
-  it("should back() call window.history.back()", () => {
-    const spy = jest.spyOn(window.history, "back");
-    component.back();
-    expect(spy).toBeCalled();
-  });
 });

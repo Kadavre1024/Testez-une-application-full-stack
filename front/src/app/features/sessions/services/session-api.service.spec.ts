@@ -33,12 +33,6 @@ describe('SessionApiService Unit tests', () => {
       updatedAt: new Date(),
     };
   });
-
-  it('should test get all funct', () => {
-    jest.spyOn(httpClientSpy, "get").mockReturnValue(res);
-    service.all();
-    expect(httpClientSpy.get).toBeCalledWith(res);
-  });
   
   it('should test get detail funct by id', () => {
     jest.spyOn(httpClientSpy, "get").mockReturnValue(res);

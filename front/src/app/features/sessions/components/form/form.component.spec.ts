@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {  AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,12 +14,8 @@ import { SessionService } from 'src/app/services/session.service';
 import { SessionApiService } from '../../services/session-api.service';
 
 import { FormComponent } from './form.component';
-import { Router, Routes } from '@angular/router';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { Teacher } from 'src/app/interfaces/teacher.interface';
-import { TeacherService } from 'src/app/services/teacher.service';
-import { OverlayContainer } from '@angular/cdk/overlay';
-import { By } from '@angular/platform-browser';
 
 describe('FormComponent', () => {
   let component: FormComponent;

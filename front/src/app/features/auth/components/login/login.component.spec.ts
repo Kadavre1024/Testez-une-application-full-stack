@@ -1,6 +1,6 @@
-import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,9 +14,8 @@ import { LoginComponent } from './login.component';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoginRequest } from '../../interfaces/loginRequest.interface';
 
 describe('LoginComponent Unit Test Suites', () => {
   let component: LoginComponent;
@@ -110,7 +109,7 @@ describe('LoginComponent Unit Test Suites', () => {
     expect(submit.disabled).toEqual(false);
   });
   
-  it('should throw error when submit', () => {
+  it('should throw error when submit with bad http request', () => {
     const errorResponse = new HttpErrorResponse({
       error: "test 404 error",
       status: 404,

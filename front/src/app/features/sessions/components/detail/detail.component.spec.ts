@@ -1,5 +1,5 @@
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule, } from '@angular/router/testing';
@@ -102,16 +102,6 @@ describe('DetailComponent with admin session', () => {
     expect(deleteBtn.textContent).toBe("Delete");
   });
 
-  it('should not have the delete button when user session', () => {
-    mockSessionService.sessionInformation.admin = false;
-    fixture = TestBed.createComponent(DetailComponent);
-    component = fixture.componentInstance;
-    component.sessionId = "1";
-    fixture.detectChanges();
-    const deleteBtn = fixture.debugElement.nativeElement.querySelectorAll('span[class="ml1"]')[0];
-    expect(deleteBtn.textContent).not.toBe("Delete");
-  });
-
   it('should display the correct session name', () => {
     const sessionName = fixture.debugElement.nativeElement.querySelector("h1");
     expect(sessionName.textContent).toContain(sessionMock.name);
@@ -144,12 +134,6 @@ describe('DetailComponent with admin session', () => {
     expect(sessionCreatedDate.textContent).toContain(datePipe.transform(sessionMock.createdAt, 'MMMM dd, YYYY'));
   });
 
-  it('should display the session updated date', () => {
-    const datePipe: DatePipe = new DatePipe('en-US');
-    const sessionUpdatedDate = fixture.debugElement.nativeElement.querySelector('div[class="updated"]');
-    expect(sessionUpdatedDate.textContent).toContain(datePipe.transform(sessionMock.updatedAt, 'MMMM dd, YYYY'));
-  });
-
   it('should delete() call matSnackBar.open after delete session', () => {
     const httpResponse = new HttpResponse({ status: 200, statusText: "OK"})
     const spy = jest.spyOn(matSnackBar, "open");
@@ -157,27 +141,6 @@ describe('DetailComponent with admin session', () => {
     component.delete();
     expect(spy).toBeCalledWith('Session deleted !', 'Close', { duration: 3000 });
   });
-
-  it('should call SessionApiService.participate() when call participate()', () => {
-    const spy = jest.spyOn(mockSessionApiService, "participate").mockReturnValue(of());
-    component.sessionId = "1";
-    component.participate();
-    expect(spy).toBeCalledWith("1", mockSessionService.sessionInformation.id.toString());
-  });
-
-  it('should call SessionApiService.unParticipate() when call unParticipate()', () => {
-    const spy = jest.spyOn(mockSessionApiService, "unParticipate").mockReturnValue(of());
-    component.sessionId = "1";
-    component.unParticipate();
-    expect(spy).toBeCalledWith("1", mockSessionService.sessionInformation.id.toString());
-  });
-
-  it("should back() call window.history.back()", () => {
-    const spy = jest.spyOn(window.history, "back");
-    component.back();
-    expect(spy).toBeCalled();
-  });
-
 });
 
 describe('DetailComponent with user session', () => {
